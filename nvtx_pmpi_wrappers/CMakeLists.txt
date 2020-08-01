@@ -24,3 +24,4 @@ add_custom_command(
   VERBATIM
   )
 
+install(TARGETS nvtx_pmpi)
