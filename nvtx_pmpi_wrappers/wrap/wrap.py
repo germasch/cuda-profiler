@@ -739,7 +739,12 @@ def write_fortran_wrappers(out, decl, return_val):
             if not arg.isHandle():
                 # Non-MPI handle pointer types can be passed w/o dereferencing, but need to
                 # cast to correct pointer type first (from MPI_Fint*).
-                call.addActual("(%s)%s" % (arg.castType(), arg.name))
+                if arg.castType() in ("void*", "const void*"):
+                    print("cast ", arg, arg.castType(), arg.name)
+                    call.addActualMPICH("(%s)%s" % (arg.castType(), arg.name))
+                    call.addActualMPI2("(%s)mpi_in_place_f2c(%s)" % (arg.castType(), arg.name))
+                else:
+                    call.addActual("(%s)%s" % (arg.castType(), arg.name))
             else:
                 # For MPI-1, assume ints, cross fingers, and pass things straight through.
                 call.addActualMPICH("(%s*)%s" % (arg.type, arg.name))

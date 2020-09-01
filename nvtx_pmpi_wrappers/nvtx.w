@@ -50,6 +50,17 @@ nvtxDomainHandle_t nvtx_mpi_domain;
   {{callfn}}
 {{endfn}}
 
+extern void* mpi_fortran_in_place_;
+
+void* mpi_in_place_f2c(const void *ptr)
+{
+  if (ptr == &mpi_fortran_in_place_) {
+    return MPI_IN_PLACE;
+  } else {
+    return (void *) ptr;
+  }
+}
+
 // Wrap select MPI functions with NVTX ranges
 {{fn name MPI_Send MPI_Recv MPI_Allreduce MPI_Reduce MPI_Wait MPI_Waitany
 MPI_Waitall MPI_Waitsome MPI_Gather MPI_Gatherv MPI_Scatter MPI_Scatterv
