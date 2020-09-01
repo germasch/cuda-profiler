@@ -13,6 +13,7 @@ find_package(CUDAToolkit REQUIRED)
 
 add_library(nvtx_pmpi nvtx_pmpi.c)
 target_link_libraries(nvtx_pmpi PRIVATE CUDA::nvToolsExt)
+target_link_libraries(nvtx_pmpi PRIVATE MPI::MPI_C)
 
 set(_output "${CMAKE_CURRENT_BINARY_DIR}/nvtx_pmpi.c")
 set(_input "${CMAKE_CURRENT_SOURCE_DIR}/nvtx.w")
